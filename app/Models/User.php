@@ -21,6 +21,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'ciudad_id',
+        'telefono',
+        'birthdate',
+        'cedula'
     ];
 
     /**
@@ -41,4 +45,13 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /*public function ciudad(){
+        return $this->hasOne('App\Models\Estados', 'estado_id','id');
+    }*/
+
+    public function emails(){
+
+        return $this->hasMany(Emails::class,'user_id','id');
+    }
 }

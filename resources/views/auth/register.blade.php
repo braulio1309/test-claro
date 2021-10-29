@@ -1,6 +1,11 @@
 @extends('layouts.app')
+<?php
+    use App\Models\Paises;
+    $paises = Paises::all();
+?>
 
 @section('content')
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -22,6 +27,33 @@
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="name" class="col-md-4 col-form-label text-md-right">Cedula</label>
+
+                            <div class="col-md-6">
+                                <input id="cedula" type="text" class="form-control"  name="cedula"  required  autofocus>
+
+                               
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="name" class="col-md-4 col-form-label text-md-right">Telefono</label>
+
+                            <div class="col-md-6">
+                                <input id="cedula" type="text" class="form-control"  name="celular"   autofocus>
+
+                               
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="" class="col-md-4 col-form-label text-md-right">Fecha Nacimiento</label>
+
+                            <div class="col-md-6">
+                                <input id="name" type="date" class="form-control" name="nacimiento"  required>
+
+                               
                             </div>
                         </div>
 
@@ -61,6 +93,27 @@
                             </div>
                         </div>
 
+                        <div class="form-group row">
+                            <div class="col-sm-4">
+                                <select class="form-control" name="paises" id="paises">
+                                    @foreach($paises as $pais)
+                                        <option value="{{$pais->id}}">{{ $pais->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div  class="col-sm-4">
+                                <select class="form-control" name="estados" id="estados">
+                                    
+                                </select>
+                            </div>
+                            <div  class="col-sm-4">
+                                <select class="form-control" name="ciudad" id="ciudades">
+                                    
+                                </select>
+                            </div>
+                            
+                        </div>
+
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
@@ -74,4 +127,42 @@
         </div>
     </div>
 </div>
+
+
+<script>   
+$(document).ready(function(){
+    
+    $("#paises").change(function(){
+    var paises = $(this).val();
+    $.get('estados/show/'+paises, function(data){
+        console.log(data);
+        var producto_select;
+            for (var i=0; i<data.length; i++){
+            producto_select += `
+                <option value="${data[i].id}">${data[i].name}</option>
+            `
+            }
+
+            $("#estados").html(producto_select);
+
+    });
+    });
+
+    $("#estados").change(function(){
+    var estados = $(this).val();
+    $.get('ciudades/show/'+estados, function(data){
+        console.log(data);
+        var ciudad_select;
+            for (var i=0; i<data.length; i++){
+            ciudad_select += `
+                <option value="${data[i].id}">${data[i].name}</option>
+            `
+            }
+
+            $("#ciudades").html(ciudad_select);
+
+    });
+    });
+});
+</script>
 @endsection
